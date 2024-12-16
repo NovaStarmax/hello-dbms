@@ -1,0 +1,2 @@
+%%sql
+SELECT 'Connexion réussie' AS message;
