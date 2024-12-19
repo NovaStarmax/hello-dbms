@@ -1,17 +1,21 @@
+-- 1
 SELECT Country, Population
 FROM countrystats
 WHERE Population > (SELECT Population FROM countrystats WHERE Country = 'Russia ');
 
+-- 2
 SELECT Country, GDP_per_capita
 FROM countrystats
 WHERE Region LIKE '%EUROPE%'
   AND GDP_per_capita > (SELECT GDP_per_capita FROM countrystats WHERE Country = 'Italy ');
 
+-- 3
 SELECT Country, Population
 FROM countrystats
 WHERE Population > (SELECT Population FROM countrystats WHERE Country = 'United Kingdom ')
   AND Population < (SELECT Population FROM countrystats WHERE Country = 'Germany ');
 
+-- 4
 SELECT 
     Country,
     population,
@@ -19,39 +23,9 @@ SELECT
 FROM countrystats
  WHERE Region LIKE '%EUROPE%';
 
--- JOB 5
-SELECT 'EUROPE' AS region, MAX(`Area_sq_mi`) AS max_area
-FROM countrystats
-WHERE Region LIKE '%EUROPE%' OR Region = 'NEAR EAST' OR Region = 'BALTICS'
-
-UNION
-
-SELECT 'ASIA', MAX(`Area_sq_mi`)
-FROM countrystats
-WHERE Region LIKE '%ASIA%'
-
-UNION
-
-SELECT 'AFRICA', MAX(`Area_sq_mi`)
-FROM countrystats
-WHERE Region LIKE '%AFRICA%'
-
-UNION
-
-SELECT 'AMERICAS', MAX(`Area_sq_mi`)
-FROM countrystats
-WHERE Region LIKE '%AMER%' OR Region LIKE '%STATES%'
-
-UNION
-
-SELECT 'OCEANIA', MAX(`Area_sq_mi`)
-FROM countrystats
-WHERE Region LIKE '%OCEANIA%';
-
-
-
+-- 5
 SELECT 
-    'EUROPE/NEAR EAST/BALTICS' AS region,
+    'EUROPE' AS region,
     cs1.MAX_area,
     cs2.Country
 FROM 
@@ -122,4 +96,10 @@ JOIN countrystats cs2
     ON cs2.`Area_sq_mi` = cs1.MAX_area
 WHERE 
     cs2.Region LIKE '%OCEANIA%';
+
+-- 6 
+SELECT Region, MAX(population)
+FROM countrystats
+GROUP BY `Region`
+HAVING MAX(population) <= 25000000;
 
