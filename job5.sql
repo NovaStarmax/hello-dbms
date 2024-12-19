@@ -1,4 +1,5 @@
 -- 1
+
 SELECT Country, Population
 FROM countrystats
 WHERE Population > (SELECT Population FROM countrystats WHERE Country = 'Russia ');

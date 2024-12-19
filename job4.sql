@@ -1,3 +1,4 @@
+
 SELECT * FROM nobel WHERE yr = 1986
 
 SELECT * FROM nobel WHERE yr = 1967 AND subject = 'Literature'

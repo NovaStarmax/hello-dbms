@@ -1,3 +1,4 @@
+
 SHOW COLUMNS FROM students;
 
 DESCRIBE students;

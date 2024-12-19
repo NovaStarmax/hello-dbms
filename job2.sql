@@ -1,3 +1,4 @@
+
 SELECT Country 
 FROM countrystats 
 WHERE Country LIKE 'B%'

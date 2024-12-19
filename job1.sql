@@ -1,3 +1,4 @@
+
 SELECT Population 
 FROM countrystats 
 WHERE Country = 'Germany '
