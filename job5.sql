@@ -101,6 +101,6 @@ WHERE
 -- 6 
 SELECT Region, MAX(population)
 FROM countrystats
-GROUP BY `Region`
+GROUP BY Region
 HAVING MAX(population) <= 25000000;
 
