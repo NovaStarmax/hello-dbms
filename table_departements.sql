@@ -1,3 +1,5 @@
+-- Active: 1734612452522@@127.0.0.1@3306@dbms
+
 use dbms
 
 CREATE TABLE departements (
