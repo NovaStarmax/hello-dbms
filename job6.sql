@@ -33,6 +33,7 @@ GROUP BY Region
 
 -- 8
 SELECT Region 
+
 FROM countrystats
 GROUP BY `Region`
 HAVING SUM(`Population`) > 100000000
