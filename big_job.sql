@@ -86,10 +86,3 @@ SELECT region,
        ROUND(gas / (coal + gas + oil + hydro + renewable + nuclear) * 100, 2) AS gas_percentage,
        ROUND(oil / (coal + gas + oil + hydro + renewable + nuclear) * 100, 2) AS oil_percentage
 FROM World;
-
--- Top 7 des pays les plus accès sur les energies renouvelables
-SELECT country, renewable
-FROM country
-ORDER BY renewable DESC
-LIMIT 7;
-

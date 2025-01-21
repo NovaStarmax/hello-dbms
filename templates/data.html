@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Données et Observations</title>
+</head>
+<body>
+    <h1>Données et Observations</h1>
+    
+    <h2>Observations :</h2>
+    <ul>
+        {% for obs in observations %}
+            <li>{{ obs }}</li>
+        {% endfor %}
+    </ul>
+    
+    <h2>Table World :</h2>
+    <table border="1">
+        <tr>
+            <th>ID</th>
+            <th>Region</th>
+            <th>Coal</th>
+            <th>Gas</th>
+            <th>Oil</th>
+            <th>Hydro</th>
+            <th>Renewable</th>
+            <th>Nuclear</th>
+        </tr>
+        {% for row in world_records %}
+        <tr>
+            <td>{{ row.id }}</td>
+            <td>{{ row.region }}</td>
+            <td>{{ row.coal }}</td>
+            <td>{{ row.gas }}</td>
+            <td>{{ row.oil }}</td>
+            <td>{{ row.hydro }}</td>
+            <td>{{ row.renewable }}</td>
+            <td>{{ row.nuclear }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    
+    <h2>Table Country :</h2>
+    <table border="1">
+        <tr>
+            <th>ID</th>
+            <th>Country</th>
+            <th>Coal</th>
+            <th>Gas</th>
+            <th>Oil</th>
+            <th>Hydro</th>
+            <th>Renewable</th>
+            <th>Nuclear</th>
+        </tr>
+        {% for row in country_records %}
+        <tr>
+            <td>{{ row.id }}</td>
+            <td>{{ row.country }}</td>
+            <td>{{ row.coal }}</td>
+            <td>{{ row.gas }}</td>
+            <td>{{ row.oil }}</td>
+            <td>{{ row.hydro }}</td>
+            <td>{{ row.renewable }}</td>
+            <td>{{ row.nuclear }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    
+    <a href="/">Retour à l'accueil</a>
+</body>
+</html>
