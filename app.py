@@ -10,7 +10,7 @@ def select_profile():
     global db_config
     print("==== Sélectionnez un profil de base de données ====")
     print("1. Antoine")
-    print("2. Profil utilisateur 2")
+    print("2. Sulili")
     print("3. Profil utilisateur 3")
 
     choice = input("Entrez le numéro du profil (1/2/3, par défaut 1) : ").strip()

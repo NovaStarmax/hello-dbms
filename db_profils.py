@@ -9,8 +9,8 @@ profils = {
     },
     "2": {
         'host': 'localhost',
-        'user': 'dev_user',
-        'password': 'mypassword',
+        'user': 'root',
+        'password': '',
         'database': 'carbonfootprint_dev'
     },
     "3": {
