@@ -1,16 +1,26 @@
 from flask import Flask, render_template
 import mysql.connector
 import pandas as pd
+from db_profils import profils
 
 app = Flask(__name__)
+db_config = {}
 
-# Connexion à la base de données
-db_config = {
-    'host': 'localhost',
-    'user': 'root',
-    'password': 'root',
-    'database': 'carbonfootprint'
-}
+def select_profile():
+    global db_config
+    print("==== Sélectionnez un profil de base de données ====")
+    print("1. Antoine")
+    print("2. Profil utilisateur 2")
+    print("3. Profil utilisateur 3")
+
+    choice = input("Entrez le numéro du profil (1/2/3, par défaut 1) : ").strip()
+    
+    # Par défaut, choisir le profil 1
+    if choice == "" or choice not in profils:
+        choice = "1"
+    
+    db_config = profils[choice]
+    print(f"\nProfil {choice} sélectionné avec succès !\n")
 
 # Route pour la page principale
 @app.route('/')
@@ -56,4 +66,5 @@ def data():
                            observations=observations)
 
 if __name__ == '__main__':
+    select_profile()
     app.run(debug=True)
