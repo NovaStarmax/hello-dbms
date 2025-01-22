@@ -1,70 +1,70 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Données et Observations</title>
-</head>
-<body>
-    <h1>Données et Observations</h1>
-    
-    <h2>Observations :</h2>
-    <ul>
-        {% for obs in observations %}
-            <li>{{ obs }}</li>
-        {% endfor %}
-    </ul>
-    
-    <h2>Table World :</h2>
-    <table border="1">
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Données Carbone</h2>
+
+<h3>Observations</h3>
+<ul>
+    {% for observation in observations %}
+    <li>{{ observation }}</li>
+    {% endfor %}
+</ul>
+
+<h3>Données Régionales (World)</h3>
+<table>
+    <thead>
         <tr>
-            <th>ID</th>
-            <th>Region</th>
-            <th>Coal</th>
-            <th>Gas</th>
-            <th>Oil</th>
-            <th>Hydro</th>
-            <th>Renewable</th>
-            <th>Nuclear</th>
+            <th>Région</th>
+            <th>Charbon (%)</th>
+            <th>Gaz (%)</th>
+            <th>Pétrole (%)</th>
+            <th>Hydroélectricité (%)</th>
+            <th>Renouvelables (%)</th>
+            <th>Nucléaire (%)</th>
         </tr>
-        {% for row in world_records %}
+    </thead>
+    <tbody>
+        {% for record in world_records %}
         <tr>
-            <td>{{ row.id }}</td>
-            <td>{{ row.region }}</td>
-            <td>{{ row.coal }}</td>
-            <td>{{ row.gas }}</td>
-            <td>{{ row.oil }}</td>
-            <td>{{ row.hydro }}</td>
-            <td>{{ row.renewable }}</td>
-            <td>{{ row.nuclear }}</td>
+            <td>{{ record.region }}</td>
+            <td>{{ record.coal }}</td>
+            <td>{{ record.gas }}</td>
+            <td>{{ record.oil }}</td>
+            <td>{{ record.hydro }}</td>
+            <td>{{ record.renewable }}</td>
+            <td>{{ record.nuclear }}</td>
         </tr>
         {% endfor %}
-    </table>
-    
-    <h2>Table Country :</h2>
-    <table border="1">
+    </tbody>
+</table>
+
+<h3>Données par Pays (Country)</h3>
+<table>
+    <thead>
         <tr>
-            <th>ID</th>
-            <th>Country</th>
-            <th>Coal</th>
-            <th>Gas</th>
-            <th>Oil</th>
-            <th>Hydro</th>
-            <th>Renewable</th>
-            <th>Nuclear</th>
+            <th>Pays</th>
+            <th>Région</th>
+            <th>Charbon (%)</th>
+            <th>Gaz (%)</th>
+            <th>Pétrole (%)</th>
+            <th>Hydroélectricité (%)</th>
+            <th>Renouvelables (%)</th>
+            <th>Nucléaire (%)</th>
         </tr>
-        {% for row in country_records %}
+    </thead>
+    <tbody>
+        {% for record in country_records %}
         <tr>
-            <td>{{ row.id }}</td>
-            <td>{{ row.country }}</td>
-            <td>{{ row.coal }}</td>
-            <td>{{ row.gas }}</td>
-            <td>{{ row.oil }}</td>
-            <td>{{ row.hydro }}</td>
-            <td>{{ row.renewable }}</td>
-            <td>{{ row.nuclear }}</td>
+            <td>{{ record.country }}</td>
+            <td>{{ record.region_id }}</td>
+            <td>{{ record.coal }}</td>
+            <td>{{ record.gas }}</td>
+            <td>{{ record.oil }}</td>
+            <td>{{ record.hydro }}</td>
+            <td>{{ record.renewable }}</td>
+            <td>{{ record.nuclear }}</td>
         </tr>
         {% endfor %}
-    </table>
-    
-    <a href="/">Retour à l'accueil</a>
-</body>
-</html>
+    </tbody>
+</table>
+{% endblock %}

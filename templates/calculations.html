@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}Calcul des Émissions{% endblock %}
+
+{% block header %}
+    <h1>Calculateur d'Émissions de CO2</h1>
+{% endblock %}
+
+{% block content %}
+    <h2>Calcul des émissions totales</h2>
+    <form method="POST">
+        <label for="country_id">Sélectionnez un pays :</label>
+        <select id="country_id" name="country_id">
+            {% for country in countries %}
+                <option value="{{ country.id }}">{{ country.country }}</option>
+            {% endfor %}
+        </select>
+        <button type="submit">Calculer</button>
+    </form>
+
+    {% if total_emissions is not none %}
+        <h3>Résultat</h3>
+        <p>Émissions totales : {{ total_emissions }} gCO2/kWh</p>
+    {% endif %}
+{% endblock %}
