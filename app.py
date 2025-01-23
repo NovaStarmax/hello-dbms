@@ -11,7 +11,7 @@ def select_profile():
     print("==== Sélectionnez un profil de base de données ====")
     print("1. Antoine")
     print("2. Sulili")
-    print("3. Profil utilisateur 3")
+    print("3. Ines")
 
     choice = input("Entrez le numéro du profil (1/2/3, par défaut 1) : ").strip()
     
