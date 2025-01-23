@@ -15,8 +15,8 @@ profils = {
     },
     "3": {
         'host': 'localhost',
-        'user': 'test_user',
-        'password': 'testpassword',
-        'database': 'carbonfootprint_test'
+        'user': 'root',
+        'password': 'azerty',
+        'database': 'carbonfootprint'
     }
 }
