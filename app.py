@@ -11,7 +11,6 @@ db_config = {
     'database': 'carbonfootprint'
 }
 
-# Émissions médianes (gCO2/kWh)
 median_emissions = {
     'coal': 820,
     'gas': 490,
@@ -28,14 +27,11 @@ def get_db_connection():
 def home():
     conn = get_db_connection()
     
-    # Charger liste des régions
     df_regions = pd.read_sql("SELECT id, region, coal, gas, oil, hydro, renewable, nuclear FROM World", conn)
     regions_list = df_regions.to_dict(orient='records')
     
-    # CHARGER TOUT LE JEU DE DONNÉES
-    #  - World complet
     df_world_all = pd.read_sql("SELECT * FROM World", conn)
-    #  - Country complet
+
     df_country_all = pd.read_sql("SELECT * FROM Country", conn)
 
     selected_region_id = None
@@ -47,12 +43,10 @@ def home():
     countries_list = []
     
     if request.method == 'POST':
-        # Récupère region, pays, conso kW
         selected_region_id = request.form.get("region_id")
         selected_country_id = request.form.get("country_id")
         consumption_kW = float(request.form.get("consumption_kW", 1))
         
-        # 1) Données de la région
         if selected_region_id:
             query_r = "SELECT * FROM World WHERE id = %s"
             df_r = pd.read_sql(query_r, conn, params=(selected_region_id,))
@@ -73,12 +67,10 @@ def home():
 
                 region_data = df_r.to_dict(orient='records')[0]
 
-            # 2) Liste des pays de la région
             query_c = "SELECT id, country FROM Country WHERE region_id = %s"
             df_c = pd.read_sql(query_c, conn, params=(selected_region_id,))
             countries_list = df_c.to_dict(orient='records')
         
-        # 3) Données du pays
         if selected_country_id:
             query_p = "SELECT * FROM Country WHERE id = %s"
             df_p = pd.read_sql(query_p, conn, params=(selected_country_id,))
@@ -109,7 +101,6 @@ def home():
                            countries_list=countries_list,
                            region_data=region_data,
                            country_data=country_data,
-                           # ON PASSE LES DF COMPLETS
                            df_world_all=df_world_all.to_dict(orient='records'),
                            df_country_all=df_country_all.to_dict(orient='records')
                            )
