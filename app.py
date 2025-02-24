@@ -32,6 +32,12 @@ def home():
     df_regions = pd.read_sql("SELECT id, region, coal, gas, oil, hydro, renewable, nuclear FROM World", conn)
     regions_list = df_regions.to_dict(orient='records')
     
+    # CHARGER TOUT LE JEU DE DONNÉES
+    #  - World complet
+    df_world_all = pd.read_sql("SELECT * FROM World", conn)
+    #  - Country complet
+    df_country_all = pd.read_sql("SELECT * FROM Country", conn)
+
     selected_region_id = None
     selected_country_id = None
     consumption_kW = 1
@@ -51,7 +57,6 @@ def home():
             query_r = "SELECT * FROM World WHERE id = %s"
             df_r = pd.read_sql(query_r, conn, params=(selected_region_id,))
             if not df_r.empty:
-                # Calcule la contribution par source
                 df_r['coal_contrib'] = (df_r['coal']/100)*median_emissions['coal']
                 df_r['gas_contrib']  = (df_r['gas']/100)*median_emissions['gas']
                 df_r['oil_contrib']  = (df_r['oil']/100)*median_emissions['oil']
@@ -63,8 +68,6 @@ def home():
                     df_r['coal_contrib'] + df_r['gas_contrib'] + df_r['oil_contrib'] +
                     df_r['hydro_contrib'] + df_r['renewable_contrib'] + df_r['nuclear_contrib']
                 )
-
-                # Émission annuelle = (emission_total/1000)*24*365*consumption_kW
                 df_r['annual_kg'] = (df_r['emission_total']/1000)*(24*365)*consumption_kW
                 df_r['trees_needed'] = df_r['annual_kg']/25
 
@@ -105,7 +108,11 @@ def home():
                            consumption_kW=consumption_kW,
                            countries_list=countries_list,
                            region_data=region_data,
-                           country_data=country_data)
+                           country_data=country_data,
+                           # ON PASSE LES DF COMPLETS
+                           df_world_all=df_world_all.to_dict(orient='records'),
+                           df_country_all=df_country_all.to_dict(orient='records')
+                           )
 
 if __name__=='__main__':
     app.run(debug=True)
