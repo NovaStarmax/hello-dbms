@@ -1,11 +1,257 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
-    <title>{{ context.title }}</title>
+  <meta charset="UTF-8">
+  <title>Calculateur d'Empreinte Carbone</title>
+  <!-- Lien vers Bootstrap -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <!-- Lien vers ton style personnalisé -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
-<body>
-    <h1>{{ context.title }}</h1>
-    <p>{{ context.description }}</p>
-    <a href="/data">Voir les données et observations</a>
+<body class="bg-light">
+
+<!-- Barre de navigation verte -->
+<nav class="navbar navbar-eco mb-4">
+  <div class="container">
+    <a class="navbar-brand" href="#">Calculateur d'Empreinte Carbone</a>
+  </div>
+</nav>
+
+<div class="container">
+
+  <!-- (1) FORMULAIRE DE FILTRES -->
+  <form method="POST" class="row g-3 mb-4">
+    <div class="col-md-3">
+      <label for="region_id" class="form-label fw-bold">Région</label>
+      <select name="region_id" id="region_id" class="form-select" onchange="this.form.submit()">
+        <option value="">--- Choisir ---</option>
+        {% for reg in regions_list %}
+          <option value="{{ reg.id }}" {% if reg.id|string == selected_region_id %}selected{% endif %}>
+            {{ reg.region }}
+          </option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <div class="col-md-3">
+      <label for="country_id" class="form-label fw-bold">Pays</label>
+      <select name="country_id" id="country_id" class="form-select" onchange="this.form.submit()">
+        <option value="">--- Choisir ---</option>
+        {% for c in countries_list %}
+          <option value="{{ c.id }}" {% if c.id|string == selected_country_id %}selected{% endif %}>
+            {{ c.country }}
+          </option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <div class="col-md-2">
+      <label for="consumption_kW" class="form-label fw-bold">Puissance (kW)</label>
+      <input type="number" step="0.01" name="consumption_kW" class="form-control" value="{{ consumption_kW|default(1) }}">
+    </div>
+
+    <div class="col-md-2 align-self-end">
+      <button type="submit" class="btn btn-eco w-100">Mettre à jour</button>
+    </div>
+  </form>
+
+  <!-- (2) AFFICHAGE DE LA RÉGION -->
+  <div class="row">
+    {% if region_data %}
+    <div class="col-md-6">
+      <div class="card mb-3 shadow-sm">
+        <div class="card-header card-header-eco">
+          <h5 class="mb-0">Données du groupe : {{ region_data.region }}</h5>
+        </div>
+        <div class="card-body">
+          <table class="table table-sm table-bordered mb-3">
+            <thead>
+              <tr>
+                <th>Source</th>
+                <th>%</th>
+                <th>Contrib.</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Charbon</td>
+                <td>{{ region_data.coal|round(2) }}%</td>
+                <td>{{ region_data.coal_contrib|round(2) }}</td>
+              </tr>
+              <tr>
+                <td>Gaz</td>
+                <td>{{ region_data.gas|round(2) }}%</td>
+                <td>{{ region_data.gas_contrib|round(2) }}</td>
+              </tr>
+              <tr>
+                <td>Pétrole</td>
+                <td>{{ region_data.oil|round(2) }}%</td>
+                <td>{{ region_data.oil_contrib|round(2) }}</td>
+              </tr>
+              <tr>
+                <td>Hydro</td>
+                <td>{{ region_data.hydro|round(2) }}%</td>
+                <td>{{ region_data.hydro_contrib|round(2) }}</td>
+              </tr>
+              <tr>
+                <td>Renouvelable</td>
+                <td>{{ region_data.renewable|round(2) }}%</td>
+                <td>{{ region_data.renewable_contrib|round(2) }}</td>
+              </tr>
+              <tr>
+                <td>Nucléaire</td>
+                <td>{{ region_data.nuclear|round(2) }}%</td>
+                <td>{{ region_data.nuclear_contrib|round(2) }}</td>
+              </tr>
+            </tbody>
+          </table>
+          <p><strong>Émission totale :</strong> {{ region_data.emission_total|round(2) }} gCO2/kWh</p>
+          <p><strong>Arbres nécessaires :</strong> {{ region_data.trees_needed|round(2) }}</p>
+          <p><strong>Émissions annuelles (kg CO2) :</strong> {{ region_data.annual_kg|round(2) }}</p>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+
+    <!-- (3) AFFICHAGE DU PAYS -->
+    {% if country_data %}
+    <div class="col-md-6">
+      <div class="card mb-3 shadow-sm">
+        <div class="card-header card-header-eco">
+          <h5 class="mb-0">Pays : {{ country_data.country }}</h5>
+        </div>
+        <div class="card-body">
+          <table class="table table-sm table-bordered mb-3">
+            <thead>
+              <tr>
+                <th>Source</th>
+                <th>%</th>
+                <th>Contrib.</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Charbon</td>
+                <td>{{ country_data.coal|round(2) }}%</td>
+                <td>{{ country_data.coal_contrib|round(2) }}</td>
+              </tr>
+              <tr>
+                <td>Gaz</td>
+                <td>{{ country_data.gas|round(2) }}%</td>
+                <td>{{ country_data.gas_contrib|round(2) }}</td>
+              </tr>
+              <tr>
+                <td>Pétrole</td>
+                <td>{{ country_data.oil|round(2) }}%</td>
+                <td>{{ country_data.oil_contrib|round(2) }}</td>
+              </tr>
+              <tr>
+                <td>Hydro</td>
+                <td>{{ country_data.hydro|round(2) }}%</td>
+                <td>{{ country_data.hydro_contrib|round(2) }}</td>
+              </tr>
+              <tr>
+                <td>Renouvelable</td>
+                <td>{{ country_data.renewable|round(2) }}%</td>
+                <td>{{ country_data.renewable_contrib|round(2) }}</td>
+              </tr>
+              <tr>
+                <td>Nucléaire</td>
+                <td>{{ country_data.nuclear|round(2) }}%</td>
+                <td>{{ country_data.nuclear_contrib|round(2) }}</td>
+              </tr>
+            </tbody>
+          </table>
+          <p><strong>Émission totale :</strong> {{ country_data.emission_total|round(2) }} gCO2/kWh</p>
+          <p><strong>Arbres nécessaires :</strong> {{ country_data.trees_needed|round(2) }}</p>
+          <p><strong>Émissions annuelles (kg CO2) :</strong> {{ country_data.annual_kg|round(2) }}</p>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+  </div>
+
+  <!-- (4) APERÇU DU JEU DE DONNÉES COMPLET -->
+  <hr class="my-4">
+  <h2>Aperçu du jeu de données</h2>
+  
+  <!-- 4.1) TABLE WORLD COMPLET -->
+  <div class="card mb-4">
+    <div class="card-header card-header-eco">
+      <h5 class="mb-0">Table World</h5>
+    </div>
+    <div class="card-body">
+      <table class="table table-striped table-bordered">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Région</th>
+            <th>Charbon</th>
+            <th>Gaz</th>
+            <th>Pétrole</th>
+            <th>Hydro</th>
+            <th>Renouvelable</th>
+            <th>Nucléaire</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for row in df_world_all %}
+          <tr>
+            <td>{{ row.id }}</td>
+            <td>{{ row.region }}</td>
+            <td>{{ row.coal }}</td>
+            <td>{{ row.gas }}</td>
+            <td>{{ row.oil }}</td>
+            <td>{{ row.hydro }}</td>
+            <td>{{ row.renewable }}</td>
+            <td>{{ row.nuclear }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- 4.2) TABLE COUNTRY COMPLET -->
+  <div class="card mb-4">
+    <div class="card-header card-header-eco">
+      <h5 class="mb-0">Table Country</h5>
+    </div>
+    <div class="card-body">
+      <table class="table table-striped table-bordered">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Pays</th>
+            <th>region_id</th>
+            <th>Charbon</th>
+            <th>Gaz</th>
+            <th>Pétrole</th>
+            <th>Hydro</th>
+            <th>Renouvelable</th>
+            <th>Nucléaire</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for row in df_country_all %}
+          <tr>
+            <td>{{ row.id }}</td>
+            <td>{{ row.country }}</td>
+            <td>{{ row.region_id }}</td>
+            <td>{{ row.coal }}</td>
+            <td>{{ row.gas }}</td>
+            <td>{{ row.oil }}</td>
+            <td>{{ row.hydro }}</td>
+            <td>{{ row.renewable }}</td>
+            <td>{{ row.nuclear }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div> <!-- .container -->
+
 </body>
 </html>

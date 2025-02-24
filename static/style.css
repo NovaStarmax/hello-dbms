@@ -1,0 +1,27 @@
+/* Couleur de fond du body */
+body {
+    background-color: #F1F8E9; /* Vert pastel ultra léger */
+  }
+  
+  /* Barre de navigation écolo */
+  .navbar-eco {
+    background-color: #C8E6C9 !important;
+    color: #2E7D32 !important;
+  }
+  
+  /* Entête de card (région/pays) vert pastel un peu plus foncé */
+  .card-header-eco {
+    background-color: #A5D6A7 !important;
+    color: #2E7D32 !important;
+  }
+  
+  /* Bouton écolo */
+  .btn-eco {
+    background-color: #C8E6C9 !important;
+    color: #2E7D32 !important;
+    border: none;
+  }
+  .btn-eco:hover {
+    background-color: #A5D6A7 !important;
+    color: #1B5E20 !important;
+  }

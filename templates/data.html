@@ -1,70 +1,51 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
-    <title>Données et Observations</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Empreinte Carbone</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <h1>Données et Observations</h1>
+    <h1>Empreinte Carbone par Pays</h1>
     
-    <h2>Observations :</h2>
-    <ul>
-        {% for obs in observations %}
-            <li>{{ obs }}</li>
-        {% endfor %}
-    </ul>
-    
-    <h2>Table World :</h2>
-    <table border="1">
+    <form action="/data" method="get">
+        <label for="country">Sélectionnez un pays :</label>
+        <select name="country" id="country">
+            <option value="World">Monde</option>
+            <option value="France">France</option>
+            <option value="United States">États-Unis</option>
+            <option value="China">Chine</option>
+        </select>
+        <button type="submit">Filtrer</button>
+    </form>
+
+    <h2>Données pour {{ country }}</h2>
+    <table>
         <tr>
-            <th>ID</th>
-            <th>Region</th>
-            <th>Coal</th>
-            <th>Gas</th>
-            <th>Oil</th>
-            <th>Hydro</th>
-            <th>Renewable</th>
-            <th>Nuclear</th>
+            <th>Source</th>
+            <th>% Utilisation</th>
+            <th>Contribution CO2 (g/kWh)</th>
+            <th>Nombre d'arbres nécessaires</th>
         </tr>
-        {% for row in world_records %}
+        {% for row in data %}
         <tr>
-            <td>{{ row.id }}</td>
-            <td>{{ row.region }}</td>
-            <td>{{ row.coal }}</td>
-            <td>{{ row.gas }}</td>
-            <td>{{ row.oil }}</td>
-            <td>{{ row.hydro }}</td>
-            <td>{{ row.renewable }}</td>
-            <td>{{ row.nuclear }}</td>
+            <td>Charbon</td>
+            <td>{{ row['coal'] }}%</td>
+            <td>{{ row['emission_contribution'] }}</td>
+            <td>{{ row['trees_needed'] }}</td>
         </tr>
-        {% endfor %}
-    </table>
-    
-    <h2>Table Country :</h2>
-    <table border="1">
         <tr>
-            <th>ID</th>
-            <th>Country</th>
-            <th>Coal</th>
-            <th>Gas</th>
-            <th>Oil</th>
-            <th>Hydro</th>
-            <th>Renewable</th>
-            <th>Nuclear</th>
-        </tr>
-        {% for row in country_records %}
-        <tr>
-            <td>{{ row.id }}</td>
-            <td>{{ row.country }}</td>
-            <td>{{ row.coal }}</td>
-            <td>{{ row.gas }}</td>
-            <td>{{ row.oil }}</td>
-            <td>{{ row.hydro }}</td>
-            <td>{{ row.renewable }}</td>
-            <td>{{ row.nuclear }}</td>
+            <td>Gaz</td>
+            <td>{{ row['gas'] }}%</td>
+            <td>{{ row['emission_contribution'] }}</td>
+            <td>{{ row['trees_needed'] }}</td>
         </tr>
         {% endfor %}
     </table>
-    
-    <a href="/">Retour à l'accueil</a>
+
+    <h2>Carte des émissions</h2>
+    <iframe src="{{ map_path }}" width="100%" height="500px"></iframe>
+
 </body>
 </html>
